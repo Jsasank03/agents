@@ -13,8 +13,8 @@ Setup:
 
 import json
 import os
-from dotenv import load_dotenv
 import litellm
+from dotenv import load_dotenv
 from litellm.exceptions import RateLimitError, AuthenticationError, APIError
 
 from agent_related import TOOLS, TASK, SYSTEM_PROMPT, execute_tool, log_tool_call
@@ -25,14 +25,11 @@ from agent_related import TOOLS, TASK, SYSTEM_PROMPT, execute_tool, log_tool_cal
 
 load_dotenv()
 
-os.environ["GROQ_API_KEY"]    = os.getenv("GROQ_API_KEY", "")
-os.environ["GEMINI_API_KEY"]  = os.getenv("GEMINI_API_KEY", "")
-
-# Ollama runs locally — no API key needed
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+# Set LiteLLM Proxy URL (default: http://localhost:4000)
+LITELLM_PROXY_URL = os.getenv("LITELLM_PROXY_URL", "http://localhost:4000")
 
 # ─────────────────────────────────────────────
-# Model tiers (priority order)
+# Model tiers (priority order) — use proxy model names
 # ─────────────────────────────────────────────
 
 # Tier 1: Groq free models (best quality first, most daily tokens last as backup)
@@ -67,24 +64,18 @@ OLLAMA_MODELS = [
 
 ALL_MODELS = ["ollama/llama3.1:8b"]
 # ─────────────────────────────────────────────
-# Single model runner
+# Single model runner (via proxy)
 # ─────────────────────────────────────────────
 
 def run_with_model(messages: list, model: str) -> str:
-    """Run the agentic loop with a specific model. Returns final response text."""
-
-    # Ollama needs a custom base URL
-    extra = {}
-    if model.startswith("ollama/"):
-        extra["api_base"] = OLLAMA_BASE_URL
-
+    """Run the agentic loop with a specific model via LiteLLM Proxy."""
     while True:
         response = litellm.completion(
             model=model,
             messages=messages,
             tools=TOOLS,
             tool_choice="auto",
-            **extra
+            api_base=LITELLM_PROXY_URL
         )
 
         message       = response.choices[0].message
@@ -158,9 +149,9 @@ def run_agent(user_message: str = TASK):
 
         except Exception as e:
             err = str(e).lower()
-            # Treat connection errors on Ollama as "not available"
+            # Treat connection errors as "not available"
             if "connection" in err or "refused" in err:
-                print(f"  ✗  Ollama not running at {OLLAMA_BASE_URL} — skipping {model}")
+                print(f"  ✗  Model not available at proxy — skipping {model}")
                 continue
             print(f"  ✗  Unexpected error: {e} — skipping...")
             continue

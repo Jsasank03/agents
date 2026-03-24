@@ -1,0 +1,67 @@
+litellm_settings:
+  drop_params: false
+
+model_list:
+  # ──────────────── GROQ MODELS ────────────────
+  - model_name: groq/llama-3.3-70b-versatile
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: ${GROQ_API_KEY}
+      api_base: https://api.groq.com/openai/v1
+
+  - model_name: groq/meta-llama/llama-4-scout-17b-16e-instruct
+    litellm_params:
+      model: groq/meta-llama/llama-4-scout-17b-16e-instruct
+      api_key: ${GROQ_API_KEY}
+      api_base: https://api.groq.com/openai/v1
+
+  - model_name: groq/meta-llama/llama-4-maverick-17b-128e-instruct
+    litellm_params:
+      model: groq/meta-llama/llama-4-maverick-17b-128e-instruct
+      api_key: ${GROQ_API_KEY}
+      api_base: https://api.groq.com/openai/v1
+
+  - model_name: groq/qwen/qwen3-32b
+    litellm_params:
+      model: groq/qwen/qwen3-32b
+      api_key: ${GROQ_API_KEY}
+      api_base: https://api.groq.com/openai/v1
+
+  - model_name: groq/llama-3.1-8b-instant
+    litellm_params:
+      model: groq/llama-3.1-8b-instant
+      api_key: ${GROQ_API_KEY}
+      api_base: https://api.groq.com/openai/v1
+
+  # ──────────────── GEMINI MODELS ────────────────
+  - model_name: gemini/gemini-2.0-flash
+    litellm_params:
+      model: gemini/gemini-2.0-flash
+      api_key: ${GEMINI_API_KEY}
+      api_base: https://generativelanguage.googleapis.com/v1beta/models
+
+  - model_name: gemini/gemini-2.0-flash-lite
+    litellm_params:
+      model: gemini/gemini-2.0-flash-lite
+      api_key: ${GEMINI_API_KEY}
+      api_base: https://generativelanguage.googleapis.com/v1beta/models
+
+  - model_name: gemini/gemini-1.5-flash
+    litellm_params:
+      model: gemini/gemini-1.5-flash
+      api_key: ${GEMINI_API_KEY}
+      api_base: https://generativelanguage.googleapis.com/v1beta/models
+
+  - model_name: gemini/gemini-1.5-flash-8b
+    litellm_params:
+      model: gemini/gemini-1.5-flash-8b
+      api_key: ${GEMINI_API_KEY}
+      api_base: https://generativelanguage.googleapis.com/v1beta/models
+
+  # ──────────────── OLLAMA MODELS ────────────────
+  - model_name: ollama/llama3.1:8b
+    litellm_params:
+      model: ollama/llama3.1:8b
+      api_base: http://localhost:11434
+      api_key: ""
+      custom_llm_provider: "ollama"
