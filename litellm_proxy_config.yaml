@@ -1,5 +1,14 @@
 litellm_settings:
   drop_params: false
+  user_api_key_admin: true
+  auth_strategy: "password"
+
+database:
+  type: "sqlite"
+  database_connection_pool_use: true
+
+general_settings:
+  master_key: "${LITELLM_MASTER_KEY}"
 
 model_list:
   # ──────────────── GROQ MODELS ────────────────
@@ -59,14 +68,21 @@ model_list:
       api_base: https://generativelanguage.googleapis.com/v1beta/models
 
   # ──────────────── OLLAMA MODELS ────────────────
-  - model_name: ollama/llama3.1:8b
+  - model_name: llama3.1:8b
     litellm_params:
       model: ollama/llama3.1:8b
       api_base: http://localhost:11434
       api_key: ""
       custom_llm_provider: "ollama"
   
-  - model_name: ollama/nomic-embed-text
+  - model_name: nomic-embed-text
     litellm_params:
       model: ollama/nomic-embed-text
-      api_base: http://127.0.0.1:11434
+      api_base: http://localhost:11434
+      api_key: ""
+      custom_llm_provider: "ollama"
+
+user_list:
+  - username: "${UI_USERNAME}"
+    password: "${UI_PASSWORD}"
+    user_role: "admin"

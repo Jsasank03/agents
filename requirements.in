@@ -1,5 +1,11 @@
 litellm[proxy]
 
+langchain
+
+ddgs
 
 groq
 
+webdriver_manager
+selenium
+playwright
